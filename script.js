@@ -15,25 +15,32 @@ const fetchPokemonData = async (query) => {
 };
 
 const populateData = (data) => {
+  if (!data) return;
+
+  // Update basic information
   document.getElementById("pokemon-name").textContent = data.name.toUpperCase();
   document.getElementById("pokemon-id").textContent = `#${data.id}`;
-  document.getElementById("weight").textContent = `Weight: ${data.weight}`;
-  document.getElementById("height").textContent = `Height: ${data.height}`;
-  document.getElementById("hp").textContent = data.stats[0].base_stat;
-  document.getElementById("attack").textContent = data.stats[1].base_stat;
-  document.getElementById("defense").textContent = data.stats[2].base_stat;
-  document.getElementById("special-attack").textContent = data.stats[3].base_stat;
-  document.getElementById("special-defense").textContent = data.stats[4].base_stat;
-  document.getElementById("speed").textContent = data.stats[5].base_stat;
+  document.getElementById("weight").textContent = `${data.weight} kg`;
+  document.getElementById("height").textContent = `${data.height} m`;
 
+  // Update stats
+  document.getElementById("hp").textContent = `${data.stats[0].base_stat}`;
+  document.getElementById("attack").textContent = `${data.stats[1].base_stat}`;
+  document.getElementById("defense").textContent = `${data.stats[2].base_stat}`;
+  document.getElementById("special-attack").textContent = `${data.stats[3].base_stat}`;
+  document.getElementById("special-defense").textContent = `${data.stats[4].base_stat}`;
+  document.getElementById("speed").textContent = `${data.stats[5].base_stat}`;
+
+  // Update types
   const typesElement = document.getElementById("types");
-  typesElement.innerHTML = "";
+  typesElement.innerHTML = "<span>Type(s):</span>"; // Reset with label
   data.types.forEach(typeInfo => {
-    const typeElement = document.createElement("p");
-    typeElement.textContent = typeInfo.type.name.toUpperCase();
+    const typeElement = document.createElement("span");
+    typeElement.textContent = ` ${typeInfo.type.name.toUpperCase()} `;
     typesElement.appendChild(typeElement);
   });
 
+  // Update sprite
   let spriteElement = document.getElementById("sprite");
   if (!spriteElement) {
     spriteElement = document.createElement("img");
@@ -41,6 +48,7 @@ const populateData = (data) => {
     resultDiv.appendChild(spriteElement);
   }
   spriteElement.src = data.sprites.front_default;
+  spriteElement.alt = `${data.name} sprite`;
 };
 
 const searchPokemon = async () => {
@@ -57,3 +65,4 @@ const searchPokemon = async () => {
 };
 
 searchBtn.addEventListener("click", searchPokemon);
+
